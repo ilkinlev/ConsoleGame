@@ -15,6 +15,7 @@ class Knight {
   }
 }
 const Kstats = new Knight("Knight", 200, 15, "valiant");
+//!
 class Wizard {
   cname: string;
   hitPoint: number;
@@ -28,6 +29,7 @@ class Wizard {
   }
 }
 const Wstats = new Wizard("Wizard", 100, 20, "wise");
+//!
 class Goblin {
   cname: string;
   hitPoint: number;
@@ -38,7 +40,17 @@ class Goblin {
     this.damage = DMG;
   }
 }
-const Gstats = new Goblin("Goblin", 90, Math.floor(Math.random() * 10) + 1);
+const Gstats = new Goblin("Goblin", 90, 8);
+//!
+class Potion {
+  cname: string;
+  value: number;
+  constructor(name: string, value: number) {
+    this.cname = name;
+    this.value = value;
+  }
+}
+const potion = new Potion("Health Pot", 25);
 //this function is clearing console screen
 async function clearScreen() {
   const clearChar = process.platform === "win32" ? "\x1Bc" : "\x1B[2J";
@@ -58,7 +70,7 @@ async function main() {
   const selectClass = await rl.question(
     `${nickname} select class: \n ${Kstats.cname} HP:${Kstats.hitPoint} DMG:${Kstats.damage} \n ${Wstats.cname} HP:${Wstats.hitPoint} DMG:${Wstats.damage} \n `
   );
-  //this contains data which one user select character
+  // Store user's selected character
   let playerCharacter;
 
   if (selectClass === "1") {
@@ -82,17 +94,68 @@ async function main() {
     rl.close();
     return;
   }
-  //starting game!
+  //starting game
   await rl.question(
-    `Your name: ${nickname} and class: ${playerCharacter.cname} Press any button to start game!`
+    `Your name: ${nickname} and class: ${playerCharacter.cname} \nPress any button to start game!`
   );
   //after entering and selecting class clear console screen
   await clearScreen();
-
+  // Narrative story based on character class
   await rl.question(
     `Once upon a time, in a land known as Evergreen, there lived a ${playerCharacter.self} and noble ${playerCharacter.cname} named ${nickname}. He was known throughout the kingdom as the protector of the realm, a man of unwavering courage and loyalty.${nickname}'s story as a ${playerCharacter.cname} reflects the ideals of honor, courage, and selfless service that are associated with this noble class. It's a story of a hero who stood as a beacon of hope and protection in a realm filled with challenges and darkness. `
   );
+  while (playerCharacter.hitPoint > 0 && Gstats.hitPoint > 0) {
+    console.log("Player's Turn:");
+    console.log(`1. Attack`);
+    console.log(`2. Defend`);
+    console.log(`3. Use Health Potion`);
 
+    const playerChoice = await rl.question("Enter your choice (1, 2, or 3): ");
+
+    if (playerChoice === "1") {
+      const playerDamage = playerCharacter.damage;
+      Gstats.hitPoint -= playerDamage;
+      console.log(
+        `${nickname} attacks the ${Gstats.cname} for ${playerDamage} damage.`
+      );
+    } else if (playerChoice === "2") {
+      playerCharacter.hitPoint += Gstats.damage / 2;
+      console.log(`${nickname} defends and gains ${Gstats.damage / 2} HP.`);
+    } else if (playerChoice === "3") {
+      playerCharacter.hitPoint += potion.value;
+      console.log(
+        `${nickname} uses the Health Potion and gains ${potion.value} HP.`
+      );
+    } else {
+      console.log(
+        "Invalid choice. Please choose 1 (Attack), 2 (Defend), or 3 (Use Health Potion)."
+      );
+    }
+
+    if (Gstats.hitPoint <= 0) {
+      console.log(`The ${Gstats.cname} has been defeated!`);
+      break;
+    }
+    console.log(`The ${Gstats.cname} has ${Gstats.hitPoint} HP remaining.`);
+
+    const enemyDamage = Gstats.damage;
+    playerCharacter.hitPoint -= enemyDamage;
+    console.log(
+      `The ${Gstats.cname} attacks ${nickname} for ${enemyDamage} damage.`
+    );
+    console.log(`${nickname} has ${playerCharacter.hitPoint} HP remaining.`);
+
+    if (playerCharacter.hitPoint <= 0) {
+      console.log(`${nickname} has been defeated by the ${Gstats.cname}.`);
+      break;
+    }
+  }
+
+  if (playerCharacter.hitPoint <= 0) {
+    console.log("Game Over. You have been defeated!");
+  } else {
+    console.log("Victory! You have defeated the enemy.");
+  }
   rl.close();
 }
 
