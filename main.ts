@@ -2,7 +2,13 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
 //Character and Enemy classes
-class Knight {
+interface Player {
+  charactername: string;
+  hitPoint: number;
+  damage: number;
+  self: string;
+}
+class Knight implements Player {
   charactername: string;
   hitPoint: number;
   damage: number;
@@ -16,7 +22,7 @@ class Knight {
 }
 const Knightstats = new Knight("Knight", 200, 15, "valiant");
 //!
-class Wizard {
+class Wizard implements Player {
   charactername: string;
   hitPoint: number;
   damage: number;
@@ -30,17 +36,20 @@ class Wizard {
 }
 const Wizardstats = new Wizard("Wizard", 100, 20, "wise");
 //!
-class Goblin {
+class Goblin implements Player {
   charactername: string;
   hitPoint: number;
   damage: number;
-  constructor(Hero: string, HP: number, DMG: number) {
+  self: string;
+
+  constructor(Hero: string, HP: number, DMG: number, self: string) {
     this.charactername = Hero;
     this.hitPoint = HP;
     this.damage = DMG;
+    this.self = self;
   }
 }
-const Goblinstats = new Goblin("Goblin", 90, 8);
+const Goblinstats = new Goblin("Goblin", 90, 8, "enemy");
 //!
 class Potion {
   charactername: string;
@@ -117,10 +126,19 @@ async function main() {
   await clearScreen();
 
   await rl.question(
-    `${nickname} You are currently in Uorla city.The guild master called you for a important quest.You have to go Bureo cave and explore suspicious things \nPress any button to continue`
+    `Dear advanture ${nickname} You are currently in Uorla city.The guild master called you for a important quest.You have to go Bureo cave and explore suspicious things \nPress any button to continue`
+  );
+  await rl.question(`You came to the cave and prepared enter`);
+  await rl.question(`It's too dark in cave you lit a torch and moved forward`);
+  await rl.question(
+    `You heard a voice coming from behind and you were attacked by a goblin!! \nPress enter to start battle!`
   );
 
   while (playerCharacter.hitPoint > 0 && Goblinstats.hitPoint > 0) {
+    console.log(
+      `${playerCharacter.charactername} HP: ${playerCharacter.hitPoint}`
+    );
+    console.log(`${Goblinstats.charactername} HP: ${Goblinstats.hitPoint}`);
     console.log("Player's Turn:");
     console.log(`1. Attack`);
     console.log(`2. Defend`);
