@@ -13,14 +13,22 @@ class Knight implements Player {
   hitPoint: number;
   damage: number;
   self: string;
-  constructor(Hero: string, HP: number, DMG: number, self: string) {
+  sword: string;
+  constructor(
+    Hero: string,
+    HP: number,
+    DMG: number,
+    self: string,
+    sword: string
+  ) {
     this.charactername = Hero;
     this.hitPoint = HP;
     this.damage = DMG;
     this.self = self;
+    this.sword = sword;
   }
 }
-const Knightstats = new Knight("Knight", 200, 15, "valiant");
+const Knightstats = new Knight("Knight", 200, 15, "valiant", "Starter sword");
 //!
 class Wizard implements Player {
   charactername: string;
@@ -95,7 +103,8 @@ async function main() {
       Knightstats.charactername,
       Knightstats.hitPoint,
       Knightstats.damage,
-      Knightstats.self
+      Knightstats.self,
+      Knightstats.sword
     );
     console.log(`${nickname} selected ${Knightstats.charactername}`);
   } else if (selectClass === "2") {
@@ -131,7 +140,7 @@ async function main() {
   await rl.question(`You came to the cave and prepared enter`);
   await rl.question(`It's too dark in cave you lit a torch and moved forward`);
   await rl.question(
-    `You heard a voice coming from behind and you were attacked by a goblin!! \nPress enter to start battle!`
+    `You heard a voice coming from behind and you were attacked by a ${Goblin.name}!! \nPress enter to start battle!`
   );
 
   while (playerCharacter.hitPoint > 0 && Goblinstats.hitPoint > 0) {
@@ -142,8 +151,7 @@ async function main() {
     console.log("Player's Turn:");
     console.log(`1. Attack`);
     console.log(`2. Defend`);
-    console.log(`3. Use Health Potion`);
-    const playerChoice = await rl.question("Enter your choice (1, 2, or 3): ");
+    const playerChoice = await rl.question("Enter your choice (1, 2): ");
 
     if (playerChoice === "1") {
       const playerDamage = playerCharacter.damage;
@@ -157,15 +165,9 @@ async function main() {
       console.log(
         `${nickname} defends and gains ${Goblinstats.damage / 2} HP.`
       );
-    } else if (playerChoice === "3") {
-      playerCharacter.hitPoint += potion.value;
-      console.log(
-        `${nickname} uses the Health Potion and gains ${potion.value} HP.`
-      );
     } else {
-      console.log(
-        "Invalid choice. Please choose 1 (Attack), 2 (Defend), or 3 (Use Health Potion)."
-      );
+      await clearScreen();
+      console.log("Invalid choice. Please choose 1 (Attack), 2 (Defend)");
     }
 
     if (Goblinstats.hitPoint <= 0) {
@@ -196,6 +198,20 @@ async function main() {
   } else {
     console.log("Victory! You have defeated the enemy.");
   }
+  //* After battle
+  await rl.question(`Goblin dropped a item ${betterSword.name}`);
+  let choice = await rl.question(`Want to change sword? 1.Yes 2.No `);
+  if (choice === "1") {
+    Knightstats.damage += 15;
+    console.log(
+      `Your damage increased by 15. Current attack: ${Knightstats.damage}`
+    );
+  } else if (choice === "2") {
+    console.log("took it into your inventory");
+  } else {
+    console.log("Invalid choice, please enter 1 or 2");
+  }
+
   rl.close();
 }
 
