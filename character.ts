@@ -1,12 +1,28 @@
-interface character {
-  HP: number;
-  DMG: number;
+interface characterStats {
+  name: string;
+  hitPoint: number;
+  damage: number;
 }
-export class Knight implements character {
-  HP: number;
-  DMG: number;
-  constructor(hitPoint: number, damage: number) {
-    this.HP = hitPoint;
-    this.DMG = damage;
+
+export class Knight implements characterStats {
+  constructor(
+    public name: string,
+    public hitPoint: number,
+    public damage: number
+  ) {
+    this.name = name;
+    this.hitPoint = hitPoint;
+    this.damage = damage;
+  }
+}
+export class Goblin implements characterStats {
+  constructor(
+    public name: string,
+    public hitPoint: number,
+    public damage: number
+  ) {
+    this.name = name;
+    this.hitPoint = hitPoint;
+    this.damage = damage;
   }
 }
