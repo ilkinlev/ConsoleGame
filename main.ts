@@ -2,12 +2,15 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { Goblin, Knight } from "./character";
 
-let Player = new Knight("Emre", 100, 5);
+let Player = new Knight("Emre", 100, 50);
 let Enemy = new Goblin("Berat", 70, 3);
 
 async function clearScreen() {
   const clearChar = process.platform === "win32" ? "\x1Bc" : "\x1B[2J";
   process.stdout.write(clearChar);
+}
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function main() {
   const rl = readline.createInterface({ input, output });
@@ -33,13 +36,16 @@ async function main() {
       console.log(
         `${Player.name} attacks ${Enemy.name} for ${playerDamage} damage.`
       );
+      await delay(1000);
     } else if (playerChoice === "2") {
       Player.hitPoint += Enemy.damage / 2;
       await clearScreen();
-      console.log(`${Player.name} defends and gains ${Enemy.damage / 2} HP.`);
+      console.log(`${Player.name} defends and take ${Enemy.damage / 2} HP.`);
+      await delay(1000);
     } else {
       await clearScreen();
       console.log("Invalid choice.\nPlease choose 1 (Attack) or 2 (Defend).");
+      await delay(1000);
     }
 
     if (Enemy.hitPoint <= 0) {
@@ -52,6 +58,7 @@ async function main() {
       console.log(
         `${Enemy.name} attacks ${Player.name} for ${enemyDamage} damage.`
       );
+      await delay(1000);
 
       if (Player.hitPoint <= 0) {
         console.log(`${Player.name} has been defeated by ${Enemy.name}.`);
