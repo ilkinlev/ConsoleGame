@@ -6,9 +6,10 @@
     "main": "main.js"
   },
   "devDependencies": {
-    "@types/node": "^20.8.9"
+    "@types/node": "^20.9.0"
   },
   "dependencies": {
-    "clear-screen": "^1.0.0"
+    "clear-screen": "^1.0.0",
+    "typescript": "^5.2.2"
   }
 }
