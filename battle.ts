@@ -1,6 +1,7 @@
 import { stdin as input, stdout as output } from "node:process";
 import * as readline from "node:readline/promises";
 import { Goblin, Knight } from "./character";
+import { rollDiceAndInteract } from "./diceroll";
 
 async function clearScreen() {
   const clearChar = process.platform === "win32" ? "\x1Bc" : "\x1B[2J";
@@ -55,8 +56,8 @@ async function enemyTurn(player: Knight, enemy: Goblin) {
 
 export async function battle() {
   const rl = readline.createInterface({ input, output });
-  let player = new Knight("Emre", 100, 50);
-  let enemy = new Goblin("Berat", 70, 3);
+  let player = new Knight("Emre", 101, 50);
+  let enemy = new Goblin("Berat", 70, 50);
 
   while (player.hitPoint > 0 && enemy.hitPoint > 0) {
     await playerTurn(player, enemy, rl);
@@ -64,6 +65,7 @@ export async function battle() {
     if (enemy.hitPoint <= 0) {
       await clearScreen();
       console.log("Victory! You have defeated the enemy.");
+      await rollDiceAndInteract();
     } else {
       await enemyTurn(player, enemy);
 

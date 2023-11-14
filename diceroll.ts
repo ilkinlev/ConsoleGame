@@ -1,6 +1,6 @@
 import { battle } from "./battle";
 import * as readline from "node:readline/promises";
-
+import { delay } from "./main";
 export async function rollDice(sides: number): Promise<number> {
   return Math.floor(Math.random() * sides) + 1;
 }
@@ -24,6 +24,8 @@ export async function rollDiceAndInteract(): Promise<void> {
     console.log(`You rolled a ${result}`);
 
     if (result === 4) {
+      console.log("Monster appears!");
+      await delay(1000);
       await battle();
     } else if (result === 3) {
       console.log("You Found Chest!\n");
