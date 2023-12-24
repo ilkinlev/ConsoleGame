@@ -1,20 +1,17 @@
 import { battle } from "./battle";
-import * as readline from "node:readline/promises";
-import { delay } from "./main";
+import { delay, waitForEnter } from "./console";
+import { Dragon, Goblin, Player, Orc, Troll, Knight } from "./character";
+
 export async function rollDice(sides: number): Promise<number> {
   return Math.floor(Math.random() * sides) + 1;
 }
 
-export async function rollDiceAndInteract(): Promise<void> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+let player = new Player("Player1", 100, 10, new Knight());
 
-  console.log("Press Enter to roll the dice. Type 'exit' to quit.");
-
+export async function gameloop() {
   while (true) {
-    const userInput = await waitForEnter(rl);
+    console.log("Press Enter to roll the dice. Type 'exit' to quit.");
+    const userInput = await waitForEnter();
 
     if (userInput.toLowerCase() === "exit") {
       break;
@@ -24,17 +21,23 @@ export async function rollDiceAndInteract(): Promise<void> {
     console.log(`You rolled a ${result}`);
 
     if (result === 4) {
+      console.clear();
       console.log("Monster appears!");
       await delay(1000);
-      await battle();
+      await battle(player, getRandomEnemy());
     } else if (result === 3) {
       console.log("You Found Chest!\n");
     }
   }
-
-  rl.close();
 }
 
-async function waitForEnter(rl: readline.Interface): Promise<string> {
-  return rl.question("");
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
+function getRandomEnemy() {
+  const enemyList = [Goblin, Orc, Troll, Dragon];
+  const enemy = enemyList[getRandomInt(enemyList.length)];
+  
+  return new enemy(100, 10);
 }

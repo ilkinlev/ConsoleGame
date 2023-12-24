@@ -1,0 +1,41 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  clear-screen:
+    specifier: ^1.0.0
+    version: 1.0.0
+  typescript:
+    specifier: ^5.2.2
+    version: 5.3.3
+
+devDependencies:
+  '@types/node':
+    specifier: ^20.9.0
+    version: 20.10.5
+
+packages:
+
+  /@types/node@20.10.5:
+    resolution: {integrity: sha512-nNPsNE65wjMxEKI93yOP+NPGGBJz/PoN3kZsVLee0XMiJolxSekEVD8wRwBUBqkwc7UWop0edW50yrCQW4CyRw==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
+  /clear-screen@1.0.0:
+    resolution: {integrity: sha512-1+a6vxzul3e6cciY0BFI0DdKts8W6XU0QG1+0Ck2oufUrvMS8wvZ169vn6SQH8PnEwxtZNnaCZufOdTPyPqTaw==}
+    hasBin: true
+    dev: false
+
+  /typescript@5.3.3:
+    resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: true
